@@ -1,0 +1,16 @@
+{
+  "name": "ironclad-dtl",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "CTF Go lab for delivery-commitment vault locks and composite unlock accounting.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "loc": "node scripts/check-loc.mjs",
+    "test": "node scripts/build.mjs && node --test --experimental-strip-types \"tests/node/*.test.ts\"",
+    "ci": "node scripts/build.mjs && node scripts/check-loc.mjs && node --test --experimental-strip-types \"tests/node/*.test.ts\""
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

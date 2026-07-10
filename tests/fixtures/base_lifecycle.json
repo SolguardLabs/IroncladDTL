@@ -1,0 +1,32 @@
+{
+  "name": "base_lifecycle",
+  "epoch": 0,
+  "policy": {
+    "default_penalty_bps": 1000,
+    "default_release_threshold_bps": 10000,
+    "allow_partial_claims": true
+  },
+  "accounts": [
+    { "id": "acme", "label": "Acme Logistics", "reserves": { "iusd": 200000 } },
+    { "id": "carrier-a", "label": "Carrier A", "reserves": { "iusd": 0 } },
+    { "id": "treasury", "label": "Treasury", "reserves": { "iusd": 0 } }
+  ],
+  "vaults": [
+    { "id": "iron-usd", "asset": "iusd", "reserve": 0, "fee_account": "treasury" }
+  ],
+  "operations": [
+    {
+      "type": "open",
+      "id": "delivery-1",
+      "account": "acme",
+      "vault": "iron-usd",
+      "beneficiary": "carrier-a",
+      "amount": 50000,
+      "due_epoch": 4
+    },
+    { "type": "deliver", "id": "proof-1", "commitment": "delivery-1", "beneficiary": "carrier-a", "amount": 50000 },
+    { "type": "settle", "commitment": "delivery-1" },
+    { "type": "claim", "id": "claim-1", "commitment": "delivery-1", "beneficiary": "carrier-a" },
+    { "type": "close", "commitment": "delivery-1" }
+  ]
+}

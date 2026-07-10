@@ -1,0 +1,34 @@
+{
+  "name": "penalty_withdrawal",
+  "epoch": 0,
+  "policy": {
+    "default_penalty_bps": 1000,
+    "default_release_threshold_bps": 10000,
+    "allow_partial_claims": true
+  },
+  "accounts": [
+    { "id": "acme", "label": "Acme Logistics", "reserves": { "iusd": 100000 } },
+    { "id": "carrier-b", "label": "Carrier B", "reserves": { "iusd": 0 } },
+    { "id": "treasury", "label": "Treasury", "reserves": { "iusd": 0 } }
+  ],
+  "vaults": [
+    { "id": "iron-usd", "asset": "iusd", "reserve": 0, "fee_account": "treasury" }
+  ],
+  "operations": [
+    {
+      "type": "open",
+      "id": "late-delivery",
+      "account": "acme",
+      "vault": "iron-usd",
+      "beneficiary": "carrier-b",
+      "amount": 50000,
+      "due_epoch": 1
+    },
+    { "type": "advance", "delta": 3 },
+    { "type": "settle", "commitment": "late-delivery" },
+    { "type": "close", "commitment": "late-delivery" },
+    { "type": "withdraw", "id": "too-large", "account": "acme", "vault": "iron-usd", "amount": 96000, "expect_error": true },
+    { "type": "withdraw", "id": "allowed", "account": "acme", "vault": "iron-usd", "amount": 90000 },
+    { "type": "sweep", "vault": "iron-usd", "account": "treasury" }
+  ]
+}
