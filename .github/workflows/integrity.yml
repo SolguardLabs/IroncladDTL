@@ -1,0 +1,45 @@
+name: Release integrity
+
+on:
+  push:
+    branches:
+      - main
+      - production
+      - "release/**"
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - main
+  release:
+    types: [published]
+
+concurrency:
+  group: integrity-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Fetch release references
+        run: git fetch origin main production --tags --force || true
+
+      - name: Verify public surface
+        run: node scripts/verify-public.mjs
+
+      - name: Verify release metadata
+        run: node scripts/verify-release.mjs

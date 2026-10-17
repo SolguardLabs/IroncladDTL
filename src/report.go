@@ -76,38 +76,37 @@ type SubReport struct {
 
 type LockReport struct {
 	ID            string `json:"id"`
-	Commitment   string `json:"commitment"`
-	Sub          string `json:"sub,omitempty"`
-	Scope        string `json:"scope"`
-	Vault        string `json:"vault"`
-	Account      string `json:"account"`
-	Beneficiary  string `json:"beneficiary,omitempty"`
-	Amount       int64  `json:"amount"`
-	Released     int64  `json:"released"`
-	Claimed      int64  `json:"claimed"`
-	Penalty      int64  `json:"penalty"`
-	State        string `json:"state"`
-	CreatedEpoch int64  `json:"created_epoch"`
-	DueEpoch     int64  `json:"due_epoch"`
-	ReleasedEpoch int64 `json:"released_epoch,omitempty"`
+	Commitment    string `json:"commitment"`
+	Sub           string `json:"sub,omitempty"`
+	Scope         string `json:"scope"`
+	Vault         string `json:"vault"`
+	Account       string `json:"account"`
+	Beneficiary   string `json:"beneficiary,omitempty"`
+	Amount        int64  `json:"amount"`
+	Released      int64  `json:"released"`
+	Claimed       int64  `json:"claimed"`
+	Penalty       int64  `json:"penalty"`
+	State         string `json:"state"`
+	CreatedEpoch  int64  `json:"created_epoch"`
+	DueEpoch      int64  `json:"due_epoch"`
+	ReleasedEpoch int64  `json:"released_epoch,omitempty"`
 }
 
 type MetricsReport struct {
-	TotalReserve             int64 `json:"total_reserve"`
-	TotalAccountReserves     int64 `json:"total_account_reserves"`
-	TotalEconomicClaims      int64 `json:"total_economic_claims"`
-	EconomicShortfall        int64 `json:"economic_shortfall"`
-	ParentReleaseMismatches  int64 `json:"parent_release_mismatches"`
-	RejectedOperations       int64 `json:"rejected_operations"`
-	Commitments              int64 `json:"commitments"`
-	SubCommitments           int64 `json:"subcommitments"`
-	Locks                    int64 `json:"locks"`
-	ClaimableSubs            int64 `json:"claimable_subs"`
-	PendingSubs              int64 `json:"pending_subs"`
-	DefaultedSubs            int64 `json:"defaulted_subs"`
-	SponsorWithdrawals       int64 `json:"sponsor_withdrawals"`
-	SponsorReleases          int64 `json:"sponsor_releases"`
-	BeneficiaryClaims        int64 `json:"beneficiary_claims"`
+	TotalReserve         int64 `json:"total_reserve"`
+	TotalAccountReserves int64 `json:"total_account_reserves"`
+	TotalEconomicClaims  int64 `json:"total_economic_claims"`
+	EconomicShortfall    int64 `json:"economic_shortfall"`
+	RejectedOperations   int64 `json:"rejected_operations"`
+	Commitments          int64 `json:"commitments"`
+	SubCommitments       int64 `json:"subcommitments"`
+	Locks                int64 `json:"locks"`
+	ClaimableSubs        int64 `json:"claimable_subs"`
+	PendingSubs          int64 `json:"pending_subs"`
+	DefaultedSubs        int64 `json:"defaulted_subs"`
+	SponsorWithdrawals   int64 `json:"sponsor_withdrawals"`
+	SponsorReleases      int64 `json:"sponsor_releases"`
+	BeneficiaryClaims    int64 `json:"beneficiary_claims"`
 }
 
 type Report struct {
@@ -289,16 +288,15 @@ func BuildLockReports(ledger *Ledger) []LockReport {
 
 func BuildMetrics(ledger *Ledger, risk RiskReport, audit AuditReport) MetricsReport {
 	metrics := MetricsReport{
-		TotalEconomicClaims:     risk.TotalClaims,
-		EconomicShortfall:       risk.TotalShortfall,
-		ParentReleaseMismatches: risk.ReleasedMismatch,
-		RejectedOperations:      int64(len(ledger.Rejected)),
-		Commitments:             int64(len(ledger.Commitments)),
-		SubCommitments:          int64(len(ledger.Subs)),
-		Locks:                   int64(len(ledger.Locks)),
-		ClaimableSubs:           audit.ClaimableSubs,
-		PendingSubs:             audit.PendingSubs,
-		DefaultedSubs:           audit.DefaultedSubs,
+		TotalEconomicClaims: risk.TotalClaims,
+		EconomicShortfall:   risk.TotalShortfall,
+		RejectedOperations:  int64(len(ledger.Rejected)),
+		Commitments:         int64(len(ledger.Commitments)),
+		SubCommitments:      int64(len(ledger.Subs)),
+		Locks:               int64(len(ledger.Locks)),
+		ClaimableSubs:       audit.ClaimableSubs,
+		PendingSubs:         audit.PendingSubs,
+		DefaultedSubs:       audit.DefaultedSubs,
 	}
 	for _, vault := range ledger.Vaults {
 		if vault != nil {

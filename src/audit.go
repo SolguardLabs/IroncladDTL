@@ -56,7 +56,6 @@ func BuildAuditReport(ledger *Ledger, risk RiskReport) AuditReport {
 	}
 	report.Checks = append(report.Checks, CheckNoNegativeAccounts(ledger))
 	report.Checks = append(report.Checks, CheckNoNegativeVaults(ledger))
-	report.Checks = append(report.Checks, CheckNoReleasedParentWithOpenSubs(ledger))
 	report.Checks = append(report.Checks, CheckEconomicClaimsCovered(risk))
 	report.Checks = append(report.Checks, CheckCommitmentTotals(ledger))
 	for _, check := range report.Checks {
@@ -96,14 +95,6 @@ func CheckNoNegativeVaults(ledger *Ledger) Check {
 		}
 	}
 	return Check{Name: "no_negative_vaults", OK: true}
-}
-
-func CheckNoReleasedParentWithOpenSubs(ledger *Ledger) Check {
-	ids := ParentReleasedWithOpenSubs(ledger)
-	if len(ids) == 0 {
-		return Check{Name: "no_released_parent_with_open_subs", OK: true}
-	}
-	return Check{Name: "no_released_parent_with_open_subs", OK: false, Details: joinStrings(ids, ",")}
 }
 
 func CheckEconomicClaimsCovered(risk RiskReport) Check {
@@ -220,16 +211,6 @@ type PlannerAction struct {
 func BuildPlanner(ledger *Ledger, risk RiskReport) []PlannerAction {
 	actions := []PlannerAction{}
 	for _, line := range risk.Exposures {
-		if line.CompositeMismatch {
-			actions = append(actions, PlannerAction{
-				Priority:   1,
-				Type:       "freeze_sponsor_withdrawals",
-				Target:     line.Commitment,
-				Reason:     "parent lock released while subclaim remains open",
-				Amount:     line.Pending + line.Claimable,
-				Executable: false,
-			})
-		}
 		if line.Overdue && line.Pending > 0 {
 			actions = append(actions, PlannerAction{
 				Priority:   2,

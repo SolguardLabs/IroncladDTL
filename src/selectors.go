@@ -15,11 +15,11 @@ type CommitmentSelector struct {
 }
 
 type AccountExposure struct {
-	Account          string `json:"account"`
-	AsSponsor        int64  `json:"as_sponsor"`
-	AsBeneficiary    int64  `json:"as_beneficiary"`
-	ReleasedToAccount int64 `json:"released_to_account"`
-	ExternalOut      int64  `json:"external_out"`
+	Account           string `json:"account"`
+	AsSponsor         int64  `json:"as_sponsor"`
+	AsBeneficiary     int64  `json:"as_beneficiary"`
+	ReleasedToAccount int64  `json:"released_to_account"`
+	ExternalOut       int64  `json:"external_out"`
 }
 
 func SelectCommitments(ledger *Ledger) []CommitmentSelector {
