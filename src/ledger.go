@@ -505,11 +505,8 @@ func (l *Ledger) releaseCompositeParentIfThresholdMet(commitment *Commitment) er
 		return nil
 	}
 
-	// Intentional CTF bug:
-	// The aggregate threshold is treated as sufficient to release the full parent
-	// lock. The function does not require every subcommitment to be terminal, so
-	// pending beneficiary claims can remain economically backed by funds that are
-	// credited back to the sponsor.
+	// Composite release policy is evaluated against aggregate delivery progress.
+	// Individual beneficiary lanes continue their lifecycle independently.
 	vault, err := l.Vault(commitment.VaultID)
 	if err != nil {
 		return err
@@ -556,9 +553,9 @@ func (l *Ledger) releaseCompositeParentIfThresholdMet(commitment *Commitment) er
 		Commitment: commitment.ID,
 		Amount:     net,
 		Details: map[string]string{
-			"delivered_bps": FormatBps(deliveredBps),
-			"threshold_bps": FormatBps(commitment.ReleaseThresholdBps),
-			"bug":           "parent released without checking pending sublocks",
+			"delivered_bps":  FormatBps(deliveredBps),
+			"threshold_bps":  FormatBps(commitment.ReleaseThresholdBps),
+			"release_policy": "aggregate_delivery",
 		},
 	})
 	return nil

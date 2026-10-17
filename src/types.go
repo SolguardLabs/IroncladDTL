@@ -45,9 +45,9 @@ type AccountConfig struct {
 }
 
 type VaultConfig struct {
-	ID        string `json:"id"`
-	Asset     string `json:"asset"`
-	Reserve   int64  `json:"reserve"`
+	ID         string `json:"id"`
+	Asset      string `json:"asset"`
+	Reserve    int64  `json:"reserve"`
 	FeeAccount string `json:"fee_account"`
 }
 
@@ -179,18 +179,18 @@ type RejectedOperation struct {
 }
 
 type Ledger struct {
-	Name       string
-	Epoch      int64
-	Policy     PolicyConfig
-	Accounts   map[string]*Account
-	Vaults     map[string]*Vault
+	Name        string
+	Epoch       int64
+	Policy      PolicyConfig
+	Accounts    map[string]*Account
+	Vaults      map[string]*Vault
 	Commitments map[string]*Commitment
-	Subs       map[string]*SubCommitment
-	Locks      map[string]*Lock
-	Events     []Event
-	Rejected   []RejectedOperation
-	Warnings   []string
-	seq        int64
+	Subs        map[string]*SubCommitment
+	Locks       map[string]*Lock
+	Events      []Event
+	Rejected    []RejectedOperation
+	Warnings    []string
+	seq         int64
 }
 
 func DefaultPolicy() PolicyConfig {

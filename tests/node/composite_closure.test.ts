@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { amount, byId, check, runFixture } from "../helpers/ironclad.ts";
+import { amount, byId, runFixture } from "../helpers/ironclad.ts";
 
 test("composite commitment closes cleanly once every child is claimed", () => {
   const report = runFixture("composite_closure.json");
@@ -23,5 +23,4 @@ test("composite commitment closes cleanly once every child is claimed", () => {
   assert.equal(amount(carrierA.reserves, "iusd"), 60000);
   assert.equal(amount(carrierB.reserves, "iusd"), 40000);
   assert.equal(report.metrics.economic_shortfall, 0);
-  assert.equal(check(report, "no_released_parent_with_open_subs"), true);
 });

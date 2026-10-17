@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Ironclad: build",
+      "type": "shell",
+      "command": "npm run build",
+      "group": "build",
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Ironclad: test",
+      "type": "shell",
+      "command": "npm test",
+      "group": "test",
+      "problemMatcher": "$go"
+    },
+    {
+      "label": "Ironclad: CI local",
+      "type": "shell",
+      "command": "npm run ci",
+      "group": "test",
+      "problemMatcher": "$go"
+    }
+  ]
+}
